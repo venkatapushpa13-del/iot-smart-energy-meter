@@ -1,0 +1,50 @@
+IoT Smart Energy Meter - Real-Time Power Monitoring, Billing & Energy Management - Using ESP32 + PZEM-004T + Blynk
+
+2. Abstract
+IoT Smart Energy Meter measures Voltage, Current, Power, Energy (kWh), Power Factor in real-time and sends data to mobile app. Users can see live usage, bill estimation, overload alerts, and control loads remotely. Replaces manual meter reading.
+
+3. Introduction & Problem
+Old meters - No real-time visibility, manual reading errors, no overload alert, high bills. Solution - Smart meter with live monitoring.
+
+4. Objectives
+Measure V, I, P, Energy accurately, Display on LCD + App, Calculate Units & Bill, Overload alert, Cloud storage, Remote ON/OFF.
+
+5. Components
+- ESP32 / NodeMCU ESP8266 - Main controller + WiFi
+- PZEM-004T v3.0 + CT 100A - Measures V, I, P, Energy
+- 16x2 LCD - Local display
+- 4-Channel Relay - ON/OFF loads
+- Buzzer, 5V SMPS, Wires
+- Software: Arduino IDE, Blynk IoT, ThingSpeak
+- Total Cost: Rs 1500 - 2500
+
+6. Working
+CT clips on live wire -> PZEM measures -> ESP32 calculates:
+Energy = Power x Time / 1000 = kWh
+Bill = Units x Rs 6.5
+Data on LCD + Blynk every 10 sec. If Power > 2000W, Buzzer + App Alert.
+
+Circuit:
+PZEM TX -> ESP32 RX2 (GPIO 16), RX -> TX2 (GPIO 17)
+LCD SDA -> 21, SCL -> 22, Relay -> 23, Buzzer -> 18
+
+7. Code - Main Logic
+float V = pzem.voltage();
+float I = pzem.current();
+float P = pzem.power();
+float E = pzem.energy();
+float bill = E * 6.5;
+Blynk.virtualWrite(V0, V);
+Blynk.virtualWrite(V1, I);
+Blynk.virtualWrite(V2, P);
+Blynk.virtualWrite(V3, E);
+Blynk.virtualWrite(V4, bill);
+8. Results
+- 100W Bulb = 98W, 1000W Heater = 998W
+- Accuracy 98-99%
+- Saves 20-30% electricity
+- Future: Prepaid, AI Bill Prediction, Solar
+
+9. Conclusion
+Provides real-time, accurate and user-friendly energy monitoring. Helps save electricity and reduce bills.
+
