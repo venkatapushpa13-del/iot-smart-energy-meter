@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html><head><title>IoT Smart Energy Meter</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font-family:Arial;background:#0f172a;color:white;text-align:center;margin:0;padding:20px}
+h1{color:#facc15} .card{background:#1e293b;padding:20px;border-radius:15px;display:inline-block;margin:10px;width:200px}
+.big{font-size:32px;color:#4ade80} button{padding:12px 25px;font-size:18px;border-radius:10px;border:none;background:#22c55e;color:white;margin:10px;cursor:pointer}
+.off{background:#ef4444}
+</style></head><body>
+<h1>⚡ IoT Smart Energy Meter</h1>
+<p>Live Monitoring - ESP32 + PZEM-004T + Blynk</p>
+<div class="card"><h3>Voltage</h3><div class="big" id="v">230.5 V</div></div>
+<div class="card"><h3>Current</h3><div class="big" id="i">2.45 A</div></div>
+<div class="card"><h3>Power</h3><div class="big" id="p">563 W</div></div>
+<div class="card"><h3>Energy</h3><div class="big" id="e">12.45 kWh</div></div>
+<div class="card"><h3>Bill</h3><div class="big" id="b">Rs 80.92</div></div>
+<div class="card"><h3>Status</h3><div class="big" id="s">🟢 NORMAL</div></div>
+<br>
+<button onclick="toggle(this)">Turn OFF Load</button>
+<p>Project by Venkatapushpa | GitHub: venkatapushpa13-de1</p>
+<script>
+let energy=12.45, on=true;
+function toggle(btn){on=!on;btn.textContent=on?"Turn OFF Load":"Turn ON Load";btn.className=on?"":"off";document.getElementById("s").textContent=on?"🟢 NORMAL":"🔴 LOAD OFF"}
+setInterval(()=>{
+if(!on){document.getElementById("p").textContent="0 W";return}
+let V=(228+Math.random()*5).toFixed(1);
+let I=(1.5+Math.random()*2).toFixed(2);
+let P=Math.round(V*I);
+energy+=P/3600000;
+let bill=(energy*6.5).toFixed(2);
+document.getElementById("v").textContent=V+" V";
+document.getElementById("i").textContent=I+" A";
+document.getElementById("p").textContent=P+" W";
+document.getElementById("e").textContent=energy.toFixed(2)+" kWh";
+document.getElementById("b").textContent="Rs "+bill;
+document.getElementById("s").textContent=P>2000?"⚠️ OVERLOAD":"🟢 NORMAL";
+},2000);
+</script></body></html>
